@@ -6,7 +6,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { personSchema, status2 } from '@/lib/schemas';
 import { Person, PersonProps } from '@/lib/types';
 
-export function PersonForm({ onSubmit, age, job, name, status, ...rest }: Readonly<PersonProps>) {
+export function PersonForm({
+	onSubmit,
+	age,
+	job,
+	name,
+	status,
+	address,
+	...rest
+}: Readonly<PersonProps>) {
 	const {
 		register,
 		formState: { errors },
@@ -14,10 +22,11 @@ export function PersonForm({ onSubmit, age, job, name, status, ...rest }: Readon
 		watch,
 	} = useForm<Person>({
 		resolver: zodResolver(personSchema),
-		defaultValues: { name, age, job, status, ...rest },
+		defaultValues: { name, age, job, status, address, ...rest },
 	});
 
 	const statusWatch = watch('status');
+	const fullAddressWatch = watch('address.fullAddress');
 
 	return (
 		<form
@@ -28,7 +37,7 @@ export function PersonForm({ onSubmit, age, job, name, status, ...rest }: Readon
 
 				console.log({ errors });
 			}}
-			className="flex flex-col border border-gray-300 max-w-md gap-4"
+			className="flex flex-col border border-gray-300 max-w-md gap-2"
 		>
 			<label className="font-bold" htmlFor="name">
 				name
@@ -92,6 +101,61 @@ export function PersonForm({ onSubmit, age, job, name, status, ...rest }: Readon
 					{'vip' in errors && <p>{errors.vip?.message}</p>}
 				</>
 			)}
+
+			<label className="font-bold" htmlFor="address-city">
+				address street
+			</label>
+			<input
+				{...register('address.street')}
+				id="address-street"
+				className="border border-gray-300"
+			/>
+			{errors.address?.street && <p>{errors.address.street.message}</p>}
+
+			<label className="font-bold" htmlFor="address-city">
+				city
+			</label>
+			<input {...register('address.city')} id="address-city" className="border border-gray-300" />
+			{errors.address?.city && <p>{errors.address.city.message}</p>}
+
+			<label className="font-bold" htmlFor="address-zip">
+				zip
+			</label>
+			<input {...register('address.zip')} id="address-zip" className="border border-gray-300" />
+			{errors.address?.zip && <p>{errors.address.zip.message}</p>}
+
+			{fullAddressWatch && (
+				<>
+					<label className="font-bold" htmlFor="address-country">
+						country
+					</label>
+					<input
+						{...register('address.country')}
+						id="address-country"
+						className="border border-gray-300"
+					/>
+					{'address' in errors &&
+						typeof errors.address === 'object' &&
+						'country' in errors.address &&
+						errors.address.country &&
+						typeof errors.address.country === 'object' &&
+						'message' in errors.address.country &&
+						typeof errors.address.country.message === 'string' && (
+							<p>{errors.address.country.message}</p>
+						)}
+				</>
+			)}
+
+			<label className="font-bold" htmlFor="address-fullAddress">
+				full address
+			</label>
+			<input
+				type="checkbox"
+				{...register('address.fullAddress')}
+				id="address-fullAddress"
+				className="border border-gray-300"
+			/>
+			{errors.address?.fullAddress && <p>{errors.address.fullAddress.message}</p>}
 
 			<button type="submit">submit</button>
 		</form>

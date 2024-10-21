@@ -9,5 +9,19 @@ export default function Person1Form() {
 		console.log({ person });
 	};
 
-	return <PersonForm onSubmit={onSubmit} name="" age="" job="" status="A" />;
+	return (
+		<PersonForm
+			onSubmit={onSubmit}
+			name=""
+			age=""
+			job=""
+			status="A"
+			address={{
+				street: '',
+				city: '',
+				zip: '',
+				fullAddress: false,
+			}}
+		/>
+	);
 }
