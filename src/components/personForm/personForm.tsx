@@ -6,23 +6,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { personSchema, status2 } from '@/lib/schemas';
 import { Person, PersonProps } from '@/lib/types';
 
-export function PersonForm({
-	onSubmit,
-	age,
-	job,
-	name,
-	status,
-	address,
-	...rest
-}: Readonly<PersonProps>) {
+export function PersonForm({ onSubmit, age, job, name, address, ...rest }: Readonly<PersonProps>) {
 	const {
 		register,
 		formState: { errors },
 		handleSubmit,
 		watch,
 	} = useForm<Person>({
+		mode: 'all',
 		resolver: zodResolver(personSchema),
-		defaultValues: { name, age, job, status, address, ...rest },
+		defaultValues: { name, age, job, address, ...rest },
 	});
 
 	const statusWatch = watch('status');

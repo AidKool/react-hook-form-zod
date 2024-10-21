@@ -8,6 +8,7 @@ const adressNoCountrySchema = z.object({
 	street: z.string().min(3, { message: 'street is required, min 3' }),
 	city: z.string().min(3, { message: 'city is required, min 3' }),
 	zip: z.string().min(3, { message: 'zip is required, min 3' }),
+	country: z.string().transform(() => ''),
 	fullAddress: z.literal(false),
 });
 
@@ -30,11 +31,16 @@ const basePersonSchema = z.object({
 
 const person1Schema = basePersonSchema.extend({
 	status: z.enum(status1),
+	topic: z.string().transform(() => ''),
+	reference: z.string().transform(() => ''),
+	vip: z.string().transform(() => ''),
 });
 
 const person2Schema = basePersonSchema.extend({
 	status: z.enum(status2),
 	topic: z.string().min(3, { message: 'topic is required, min 3' }),
+	reference: z.string().transform(() => ''),
+	vip: z.string().transform(() => ''),
 });
 
 const person3Schema = basePersonSchema.extend({

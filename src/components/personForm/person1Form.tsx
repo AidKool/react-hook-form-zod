@@ -20,8 +20,12 @@ export default function Person1Form() {
 				street: '',
 				city: '',
 				zip: '',
+				country: '',
 				fullAddress: false,
 			}}
+			reference=""
+			topic=""
+			vip=""
 		/>
 	);
 }
